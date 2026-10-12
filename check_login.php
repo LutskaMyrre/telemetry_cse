@@ -15,7 +15,10 @@ else{
     $username = $_POST['username'];
     $password = $_POST['pass'];
 
-    $sql1 = "SELECT users_username, users_password FROM users WHERE users_username = '{$username}' AND users_password = '{$password}'";
+    $stmt = mysqli_prepare($connection, "users_username, users_password FROM users WHERE users_username = '{?}' AND users_password = '{?}'");
+    mysqli_stmt_bind_param($stmt, "ss", $username, $password);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
 
     $result = mysqli_query ($connection, $sql1) or die (mysqli_error ($connection));
 
